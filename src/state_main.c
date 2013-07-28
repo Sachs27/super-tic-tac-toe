@@ -106,6 +106,7 @@ static void drawhint()
     yscreen = game->chessboard_yoff + ypos * tex->height;
 
     if (super_chessboard_check(game->scb, xpos, ypos) == 0
+            && chessboard_canput(game->scb->cbs[ypos/3][xpos/3])
             && chessboard_canput_at(game->scb->cbs[ypos/3][xpos/3],
                 xpos%3, ypos%3))
         glColor3f(0.0f, 1.0f, 0.0f);
@@ -222,9 +223,9 @@ void state_main_update(double delta)
 
         if (game->winner == CHESSBOARD_PLAYER1
                 || game->winner == CHESSBOARD_PLAYER2
-                || game->winner == CHESSBOARD_DRAW) {
+                || game->winner == CHESSBOARD_TIE) {
             sstate_pop(game->ss);
-            sstate_push(game->ss, state_win_update, state_win_render);
+            sstate_push(game->ss, state_end_update, state_end_render);
         }
     }
 }

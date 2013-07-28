@@ -56,10 +56,7 @@ int super_chessboard_putchess(struct super_chessboard *scb,
         return err;
 
     /* change the thumbnail of the super-chessboard */
-    if (scb->cbs[y][x]->state == CHESSBOARD_PLAYER1)
-        chessboard_putchess(scb->thumb, CHESSBOARD_PLAYER1, x, y);
-    else if (scb->cbs[y][x]->state == CHESSBOARD_PLAYER2)
-        chessboard_putchess(scb->thumb, CHESSBOARD_PLAYER2, x, y);
+    scb->thumb->lattices[y][x] = scb->cbs[y][x]->state;
 
     if (chessboard_canput(scb->cbs[yy][xx])) {
         scb->xexpected = xx;

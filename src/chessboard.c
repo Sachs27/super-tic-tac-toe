@@ -81,7 +81,7 @@ int chessboard_winner(struct chessboard *cb)
         return CHESSBOARD_PLAYER2;
 
     if (isfull(cb) == CHESSBOARD_LATTICE_FULL)
-        return CHESSBOARD_DRAW;
+        return CHESSBOARD_TIE;
     else
         return CHESSBOARD_NONE;
 }

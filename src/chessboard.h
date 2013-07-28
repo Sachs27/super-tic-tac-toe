@@ -14,7 +14,7 @@ enum {
     CHESSBOARD_NONE = 0,
     CHESSBOARD_PLAYER1 = 1,
     CHESSBOARD_PLAYER2 = 2,
-    CHESSBOARD_DRAW = 3,
+    CHESSBOARD_TIE = 3,
 };
 
 
@@ -36,7 +36,7 @@ struct chessboard {
      *     CHESSBOARD_NONE
      *     CHESSBOARD_PLAYER1
      *     CHESSBOARD_PLAYER2
-     *     CHESSBOARD_DRAW
+     *     CHESSBOARD_TIE
      */
     int state;
 };

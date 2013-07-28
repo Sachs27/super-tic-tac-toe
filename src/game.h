@@ -23,6 +23,7 @@ struct game {
     struct texture *tex_bigx;
     struct texture *tex_mask;
     struct texture *tex_welcome;
+    struct texture *tex_tie;
     struct texture *tex_win_player1;
     struct texture *tex_win_player2;
 

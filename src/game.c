@@ -37,6 +37,9 @@ void game_destroy(struct game *game)
     texture_destroy(game->tex_bigx);
     texture_destroy(game->tex_mask);
     texture_destroy(game->tex_welcome);
+    texture_destroy(game->tex_tie);
+    texture_destroy(game->tex_win_player1);
+    texture_destroy(game->tex_win_player2);
 
     free(game);
 }
@@ -56,6 +59,7 @@ int game_load_textures(struct game *game)
     TEXTURE_LOAD(bigx);
     TEXTURE_LOAD(mask);
     TEXTURE_LOAD(welcome);
+    TEXTURE_LOAD(tie);
     TEXTURE_LOAD(win_player1);
     TEXTURE_LOAD(win_player2);
 

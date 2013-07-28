@@ -1,11 +1,5 @@
 #include "game.h"
-#include "sstate.h"
 #include "states.h"
-#include "texture.h"
-#include "super_chessboard.h"
-
-
-extern struct game *game;
 
 
 void state_begin_update(double delta)

@@ -2,6 +2,11 @@
 #define GAME_H
 
 
+#include "texture.h"
+#include "super_chessboard.h"
+#include "sstate.h"
+
+
 enum {
     GAME_LOAD_TEXTURE_FAILED = 1,
 };
@@ -18,6 +23,8 @@ struct game {
     struct texture *tex_bigx;
     struct texture *tex_mask;
     struct texture *tex_welcome;
+    struct texture *tex_win_player1;
+    struct texture *tex_win_player2;
 
     struct super_chessboard *scb;
     int chessboard_xoff;
@@ -42,6 +49,9 @@ void game_destroy(struct game *game);
 int game_load_textures(struct game *game);
 
 void game_mainloop(struct game *game, double delta);
+
+
+extern struct game *game;
 
 
 #endif /* GAME_H */

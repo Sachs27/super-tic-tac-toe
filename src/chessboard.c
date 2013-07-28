@@ -80,18 +80,27 @@ int chessboard_winner(struct chessboard *cb)
     if (isplayer_win(cb, CHESSBOARD_PLAYER2))
         return CHESSBOARD_PLAYER2;
 
-    return isfull(cb);
+    if (isfull(cb) == CHESSBOARD_LATTICE_FULL)
+        return CHESSBOARD_DRAW;
+    else
+        return CHESSBOARD_NONE;
 }
 
 int chessboard_putchess(struct chessboard *cb, int player, int xpos, int ypos)
 {
-    if (cb->state == CHESSBOARD_LATTICE_FULL)
+    if (!chessboard_canput(cb) || !chessboard_canput_at(cb, xpos, ypos))
         return CHESSBOARD_LATTICE_FULL;
 
-    if (cb->lattices[ypos][xpos] != CHESSBOARD_LATTICE_EMPTY)
-        return CHESSBOARD_LATTICE_FULL;
-
-    cb->lattices[ypos][xpos] = player;
+    switch (player) {
+    case CHESSBOARD_PLAYER1:
+        cb->lattices[ypos][xpos] = CHESSBOARD_LATTICE_PLAYER1;
+        break;
+    case CHESSBOARD_PLAYER2:
+        cb->lattices[ypos][xpos] = CHESSBOARD_LATTICE_PLAYER2;
+        break;
+    default:
+        cb->lattices[ypos][xpos] = CHESSBOARD_LATTICE_EMPTY;
+    }
 
     cb->state = chessboard_winner(cb);
 
@@ -102,10 +111,7 @@ void chessboard_reset(struct chessboard *cb)
 {
     int i, j;
 
-    if (cb->state == CHESSBOARD_LATTICE_EMPTY)
-        return;
-
-    cb->state = CHESSBOARD_LATTICE_EMPTY;
+    cb->state = CHESSBOARD_NONE;
     for (i = 0; i < 3; ++i)
         for (j = 0; j < 3; ++j)
             cb->lattices[i][j] = CHESSBOARD_LATTICE_EMPTY;
@@ -113,8 +119,7 @@ void chessboard_reset(struct chessboard *cb)
 
 int chessboard_canput(struct chessboard *cb)
 {
-    if (cb->state == CHESSBOARD_LATTICE_EMPTY
-            || cb->state == CHESSBOARD_LATTICE_HAVE)
+    if (cb->state == CHESSBOARD_NONE)
         return 1;
     else
         return 0;

@@ -14,6 +14,6 @@ struct texture *texture_load(const char *path);
 void texture_destroy(struct texture *tex);
 void texture_draw(const struct texture *tex, GLfloat x, GLfloat y);
 void texture_draw_with_transparency(const struct texture *tex,
-				GLfloat x, GLfloat y, GLfloat transparency);
+                                GLfloat x, GLfloat y, GLfloat transparency);
 
 #endif

@@ -28,17 +28,11 @@ int super_chessboard_check(struct super_chessboard *scb, int xpos, int ypos)
     int xx = xpos % 3;
     int yy = ypos % 3;
 
-    /* input position are not the expected one. */
+    /* input position is not the expected one. */
     if ((scb->xexpected != -1 || scb->yexpected != -1)
         && (x != scb->xexpected || y != scb->yexpected)) {
         return SUPER_CHESSBOARD_INVALID_INPUT;
     }
-
-    if (!chessboard_canput(scb->cbs[y][x]))
-        return CHESSBOARD_LATTICE_FULL;
-
-    if (!chessboard_canput_at(scb->cbs[y][x], xx, yy))
-        return CHESSBOARD_LATTICE_FULL;
 
     return 0;
 }
@@ -62,10 +56,10 @@ int super_chessboard_putchess(struct super_chessboard *scb,
         return err;
 
     /* change the thumbnail of the super-chessboard */
-    if (scb->cbs[y][x]->state == CHESSBOARD_LATTICE_PLAYER1)
-        chessboard_putchess(scb->thumb, CHESSBOARD_LATTICE_PLAYER1, x, y);
-    else if (scb->cbs[y][x]->state == CHESSBOARD_LATTICE_PLAYER2)
-        chessboard_putchess(scb->thumb, CHESSBOARD_LATTICE_PLAYER2, x, y);
+    if (scb->cbs[y][x]->state == CHESSBOARD_PLAYER1)
+        chessboard_putchess(scb->thumb, CHESSBOARD_PLAYER1, x, y);
+    else if (scb->cbs[y][x]->state == CHESSBOARD_PLAYER2)
+        chessboard_putchess(scb->thumb, CHESSBOARD_PLAYER2, x, y);
 
     if (chessboard_canput(scb->cbs[yy][xx])) {
         scb->xexpected = xx;
@@ -88,6 +82,7 @@ void super_chessboard_reset(struct super_chessboard *scb)
     for (i = 0; i < 3; ++i)
         for (j = 0; j < 3; ++j)
             chessboard_reset(scb->cbs[i][j]);
+
     chessboard_reset(scb->thumb);
 }
 

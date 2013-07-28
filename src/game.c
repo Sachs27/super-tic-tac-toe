@@ -43,29 +43,21 @@ void game_destroy(struct game *game)
 
 int game_load_textures(struct game *game)
 {
-    game->tex_o = texture_load("res/o.png");
-    if (game->tex_o == NULL)
-        return GAME_LOAD_TEXTURE_FAILED;
+#define TEXTURE_LOAD(tex) \
+    do { \
+        game->tex_##tex = texture_load("res/"#tex".png"); \
+        if (game->tex_##tex == NULL) \
+            return GAME_LOAD_TEXTURE_FAILED;\
+    } while(0)
 
-    game->tex_bigo = texture_load("res/bigo.png");
-    if (game->tex_bigo == NULL)
-        return GAME_LOAD_TEXTURE_FAILED;
-
-    game->tex_x = texture_load("res/x.png");
-    if (game->tex_o == NULL)
-        return GAME_LOAD_TEXTURE_FAILED;
-
-    game->tex_bigx = texture_load("res/bigx.png");
-    if (game->tex_bigx == NULL)
-        return GAME_LOAD_TEXTURE_FAILED;
-
-    game->tex_mask = texture_load("res/mask.png");
-    if (game->tex_mask == NULL)
-        return GAME_LOAD_TEXTURE_FAILED;
-
-    game->tex_welcome = texture_load("res/welcome.png");
-    if (game->tex_welcome == NULL)
-        return GAME_LOAD_TEXTURE_FAILED;
+    TEXTURE_LOAD(o);
+    TEXTURE_LOAD(bigo);
+    TEXTURE_LOAD(x);
+    TEXTURE_LOAD(bigx);
+    TEXTURE_LOAD(mask);
+    TEXTURE_LOAD(welcome);
+    TEXTURE_LOAD(win_player1);
+    TEXTURE_LOAD(win_player2);
 
     return 0;
 }

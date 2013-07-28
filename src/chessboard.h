@@ -14,6 +14,7 @@ enum {
     CHESSBOARD_NONE = 0,
     CHESSBOARD_PLAYER1 = 1,
     CHESSBOARD_PLAYER2 = 2,
+    CHESSBOARD_DRAW = 3,
 };
 
 
@@ -32,11 +33,10 @@ struct chessboard {
      * Represent the winner of a chessboard.
      *
      * Can be one of the following value:
-     *     CHESSBOARD_LATTICE_EMPTY
-     *     CHESSBOARD_LATTICE_HAVE
-     *     CHESSBOARD_LATTICE_FULL
-     *     CHESSBOARD_LATTICE_PLAYER1
-     *     CHESSBOARD_LATTICE_PLAYER2
+     *     CHESSBOARD_NONE
+     *     CHESSBOARD_PLAYER1
+     *     CHESSBOARD_PLAYER2
+     *     CHESSBOARD_DRAW
      */
     int state;
 };

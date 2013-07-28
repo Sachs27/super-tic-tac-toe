@@ -3,10 +3,7 @@
 #include <GL/glew.h>
 
 #include "game.h"
-#include "texture.h"
-#include "sstate.h"
 #include "states.h"
-#include "super_chessboard.h"
 
 
 enum {
@@ -108,10 +105,13 @@ static void drawhint()
     xscreen = game->chessboard_xoff + xpos * tex->width;
     yscreen = game->chessboard_yoff + ypos * tex->height;
 
-    if (super_chessboard_check(game->scb, xpos, ypos) == 0)
+    if (super_chessboard_check(game->scb, xpos, ypos) == 0
+            && chessboard_canput_at(game->scb->cbs[ypos/3][xpos/3],
+                xpos%3, ypos%3))
         glColor3f(0.0f, 1.0f, 0.0f);
     else
         glColor3f(1.0f, 0.0f, 0.0f);
+
     drawline(tex->width, xscreen, yscreen + tex->width / 2.0f,
              xscreen + tex->width, yscreen + tex->width / 2.0f);
     texture_draw(tex, xscreen, yscreen);
@@ -220,10 +220,11 @@ void state_main_update(double delta)
     if (err == 0) {
         game->winner = super_chessboard_winner(game->scb);
 
-        if (game->winner == CHESSBOARD_LATTICE_PLAYER1
-                || game->winner == CHESSBOARD_LATTICE_PLAYER2
-                || game->winner == CHESSBOARD_LATTICE_FULL) {
+        if (game->winner == CHESSBOARD_PLAYER1
+                || game->winner == CHESSBOARD_PLAYER2
+                || game->winner == CHESSBOARD_DRAW) {
             sstate_pop(game->ss);
+            sstate_push(game->ss, state_win_update, state_win_render);
         }
     }
 }

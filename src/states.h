@@ -8,5 +8,8 @@ void state_begin_render();
 void state_main_update(double delta);
 void state_main_render();
 
+void state_win_update(double delta);
+void state_win_render();
 
-#endif
+
+#endif /* STATES_H */

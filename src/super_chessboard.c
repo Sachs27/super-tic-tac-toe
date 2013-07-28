@@ -25,9 +25,6 @@ int super_chessboard_check(struct super_chessboard *scb, int xpos, int ypos)
     int x = xpos / 3;
     int y = ypos / 3;
 
-    int xx = xpos % 3;
-    int yy = ypos % 3;
-
     /* input position is not the expected one. */
     if ((scb->xexpected != -1 || scb->yexpected != -1)
         && (x != scb->xexpected || y != scb->yexpected)) {

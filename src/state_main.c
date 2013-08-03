@@ -187,7 +187,8 @@ static void super_chessboard_draw(struct super_chessboard *scb,
             chessboard_draw(scb->cbs[i][j], xoff + j * cb_width,
                                             yoff + i * cb_height);
 
-    drawhint();
+    if (!game_iswin(game))
+        drawhint();
 
     /* draw chessboard's state */
     for (i = 0; i < 3; ++i)
@@ -195,9 +196,9 @@ static void super_chessboard_draw(struct super_chessboard *scb,
             chessboard_drawstate(scb->cbs[i][j], xoff + j * cb_width,
                                                  yoff + i * cb_height);
 
-
     /* draw mask */
-    if (game->scb->xexpected == -1 || game->scb->yexpected == -1)
+    if (game->scb->xexpected == -1 || game->scb->yexpected == -1
+            || game_iswin(game))
         return;
 
     for (i = 0; i < 3; ++i) {
@@ -214,19 +215,13 @@ static void super_chessboard_draw(struct super_chessboard *scb,
 
 void state_main_update(double delta)
 {
-    int err;
-
-    err = putchess();
-
-    if (err == 0) {
-        game->winner = super_chessboard_winner(game->scb);
-
-        if (game->winner == CHESSBOARD_PLAYER1
-                || game->winner == CHESSBOARD_PLAYER2
-                || game->winner == CHESSBOARD_TIE) {
+    if (game_iswin(game)) {
+        if (game->ismouse_clicked) {
+            game->ismouse_clicked = 0;
             sstate_pop(game->ss);
-            sstate_push(game->ss, state_end_update, state_end_render);
         }
+    } else {
+        putchess();
     }
 }
 
@@ -237,4 +232,18 @@ void state_main_render()
     super_chessboard_draw(game->scb,
                           game->chessboard_xoff,
                           game->chessboard_yoff);
+
+    if (game_iswin(game)) {
+        switch (game->winner) {
+        case CHESSBOARD_PLAYER1:
+            texture_draw(game->tex_win_player1, 0, 0);
+            break;
+        case CHESSBOARD_PLAYER2:
+            texture_draw(game->tex_win_player2, 0, 0);
+            break;
+        case CHESSBOARD_TIE:
+            texture_draw(game->tex_tie, 0, 0);
+            break;
+        }
+    }
 }

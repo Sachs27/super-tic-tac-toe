@@ -84,4 +84,3 @@ int super_chessboard_winner(struct super_chessboard *scb)
 {
     return chessboard_winner(scb->thumb);
 }
-

@@ -51,6 +51,8 @@ int game_load_textures(struct game *game);
 
 void game_mainloop(struct game *game, double delta);
 
+int game_iswin(struct game *game);
+
 
 extern struct game *game;
 

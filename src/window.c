@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <unistd.h>
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -123,8 +125,23 @@ static void cleanup(void)
     glfwTerminate();
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
+    /* Change working dirtory to the binary's directory */
+    {
+        char path[PATH_MAX];
+        char *ptr;
+
+        strncpy(path, argv[0], PATH_MAX);
+        ptr = strrchr(path, '\\');
+        *ptr = '\0';
+        fprintf(stderr, "%s\n", ptr);
+        if (chdir(path) < 0) {
+            fprintf(stderr, "chdir error\n");
+            return 1;
+        }
+    }
+
     game = game_create();
 
     if (setup() != 0) {

@@ -33,4 +33,5 @@ void super_chessboard_reset(struct super_chessboard *scb);
 
 int super_chessboard_winner(struct super_chessboard *scb);
 
+
 #endif

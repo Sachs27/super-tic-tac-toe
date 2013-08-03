@@ -11,7 +11,7 @@ struct game *game_create()
 {
     struct game *game;
 
-    game = malloc(sizeof(*game));
+    game = calloc(1, sizeof(*game));
 
     game->window_width = 620;
     game->window_height = 620;
@@ -69,4 +69,16 @@ int game_load_textures(struct game *game)
 void game_mainloop(struct game *game, double delta)
 {
     sstate_update_and_render(game->ss, 0.0);
+}
+
+int game_iswin(struct game *game)
+{
+    game->winner = super_chessboard_winner(game->scb);
+
+    if (game->winner == CHESSBOARD_PLAYER1
+            || game->winner == CHESSBOARD_PLAYER2
+            || game->winner == CHESSBOARD_TIE)
+        return 1;
+    else
+        return 0;
 }

@@ -18,25 +18,32 @@ static int isown_three(struct chessboard *cb, int player,
 
 static int isplayer_win(struct chessboard *cb, int player) {
     /* check horizontally */
-    if (isown_three(cb, player, 0, 0, 1, 0))
+    if (isown_three(cb, player, 0, 0, 1, 0)) {
         return 1;
-    if (isown_three(cb, player, 0, 1, 1, 0))
+    }
+    if (isown_three(cb, player, 0, 1, 1, 0)) {
         return 1;
-    if (isown_three(cb, player, 0, 2, 1, 0))
+    }
+    if (isown_three(cb, player, 0, 2, 1, 0)) {
         return 1;
+    }
     /* check vertically */
-    if (isown_three(cb, player, 0, 0, 0, 1))
+    if (isown_three(cb, player, 0, 0, 0, 1)) {
         return 1;
-    if (isown_three(cb, player, 1, 0, 0, 1))
+    }
+    if (isown_three(cb, player, 1, 0, 0, 1)) {
         return 1;
-    if (isown_three(cb, player, 2, 0, 0, 1))
+    }
+    if (isown_three(cb, player, 2, 0, 0, 1)) {
         return 1;
+    }
     /* check diagonally */
-    if (isown_three(cb, player, 0, 0, 1, 1))
+    if (isown_three(cb, player, 0, 0, 1, 1)) {
         return 1;
-    if (isown_three(cb, player, 2, 0,-1, 1))
+    }
+    if (isown_three(cb, player, 2, 0,-1, 1)) {
         return 1;
-
+    }
     return 0;
 }
 
@@ -46,16 +53,19 @@ static int isfull(struct chessboard *cb) {
 
     had = 0;
     for (i = 0; i < 3; ++i)
-        for (j = 0; j < 3; ++j)
-            if (cb->lattices[i][j] != CHESSBOARD_NONE)
-                ++had;
+    for (j = 0; j < 3; ++j) {
+        if (cb->lattices[i][j] != CHESSBOARD_NONE) {
+            ++had;
+        }
+    }
 
-    if (had == 0)
+    if (had == 0) {
         return CHESSBOARD_NONE;
-    else if (had < 9)
+    } else if (had < 9) {
         return CHESSBOARD_HAVE;
-    else
+    } else {
         return CHESSBOARD_FULL;
+    }
 }
 
 struct chessboard *chessboard_create() {
@@ -69,21 +79,25 @@ struct chessboard *chessboard_create() {
 }
 
 int chessboard_winner(struct chessboard *cb) {
-    if (isplayer_win(cb, CHESSBOARD_PLAYER1))
+    if (isplayer_win(cb, CHESSBOARD_PLAYER1)) {
         return CHESSBOARD_PLAYER1;
+    }
 
-    if (isplayer_win(cb, CHESSBOARD_PLAYER2))
+    if (isplayer_win(cb, CHESSBOARD_PLAYER2)) {
         return CHESSBOARD_PLAYER2;
+    }
 
-    if (isfull(cb) == CHESSBOARD_FULL)
+    if (isfull(cb) == CHESSBOARD_FULL) {
         return CHESSBOARD_TIE;
-    else
+    } else {
         return CHESSBOARD_NONE;
+    }
 }
 
 int chessboard_putchess(struct chessboard *cb, int player, int xpos, int ypos) {
-    if (!chessboard_canput(cb) || !chessboard_canput_at(cb, xpos, ypos))
+    if (!chessboard_canput(cb) || !chessboard_canput_at(cb, xpos, ypos)) {
         return CHESSBOARD_FULL;
+    }
 
     switch (player) {
     case CHESSBOARD_PLAYER1:
@@ -106,20 +120,23 @@ void chessboard_reset(struct chessboard *cb) {
 
     cb->state = CHESSBOARD_NONE;
     for (i = 0; i < 3; ++i)
-        for (j = 0; j < 3; ++j)
-            cb->lattices[i][j] = CHESSBOARD_NONE;
+    for (j = 0; j < 3; ++j) {
+        cb->lattices[i][j] = CHESSBOARD_NONE;
+    }
 }
 
 int chessboard_canput(struct chessboard *cb) {
-    if (cb->state == CHESSBOARD_NONE)
+    if (cb->state == CHESSBOARD_NONE) {
         return 1;
-    else
+    } else {
         return 0;
+    }
 }
 
 int chessboard_canput_at(struct chessboard *cb, int xpos, int ypos) {
-    if (cb->lattices[ypos][xpos] == CHESSBOARD_NONE)
+    if (cb->lattices[ypos][xpos] == CHESSBOARD_NONE) {
         return 1;
-    else
+    } else {
         return 0;
+    }
 }

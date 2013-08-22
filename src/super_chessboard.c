@@ -11,8 +11,9 @@ struct super_chessboard *super_chessboard_create() {
     scb->thumb = chessboard_create();
 
     for (i = 0; i < 3; ++i)
-        for (j = 0; j < 3; ++j)
-            scb->cbs[i][j] = chessboard_create();
+    for (j = 0; j < 3; ++j) {
+        scb->cbs[i][j] = chessboard_create();
+    }
 
     super_chessboard_reset(scb);
 
@@ -42,8 +43,9 @@ int super_chessboard_putchess(struct super_chessboard *scb,
     int yy = ypos % 3;
 
     err = super_chessboard_check(scb, xpos, ypos);
-    if (err != 0)
+    if (err != 0) {
         return err;
+    }
 
     err = chessboard_putchess(scb->cbs[y][x], player, xx, yy);
     if (err != 0)
@@ -70,8 +72,9 @@ void super_chessboard_reset(struct super_chessboard *scb) {
     scb->yexpected = -1;
 
     for (i = 0; i < 3; ++i)
-        for (j = 0; j < 3; ++j)
-            chessboard_reset(scb->cbs[i][j]);
+    for (j = 0; j < 3; ++j) {
+        chessboard_reset(scb->cbs[i][j]);
+    }
 
     chessboard_reset(scb->thumb);
 }

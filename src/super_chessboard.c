@@ -3,8 +3,7 @@
 #include "super_chessboard.h"
 
 
-struct super_chessboard *super_chessboard_create()
-{
+struct super_chessboard *super_chessboard_create() {
     int i, j;
     struct super_chessboard *scb;
 
@@ -20,8 +19,7 @@ struct super_chessboard *super_chessboard_create()
     return scb;
 }
 
-int super_chessboard_check(struct super_chessboard *scb, int xpos, int ypos)
-{
+int super_chessboard_check(struct super_chessboard *scb, int xpos, int ypos) {
     int x = xpos / 3;
     int y = ypos / 3;
 
@@ -35,8 +33,7 @@ int super_chessboard_check(struct super_chessboard *scb, int xpos, int ypos)
 }
 
 int super_chessboard_putchess(struct super_chessboard *scb,
-                              int player, int xpos, int ypos)
-{
+                              int player, int xpos, int ypos) {
     int err;
     int x = xpos / 3;
     int y = ypos / 3;
@@ -66,8 +63,7 @@ int super_chessboard_putchess(struct super_chessboard *scb,
     return 0;
 }
 
-void super_chessboard_reset(struct super_chessboard *scb)
-{
+void super_chessboard_reset(struct super_chessboard *scb) {
     int i, j;
 
     scb->xexpected = -1;
@@ -80,7 +76,6 @@ void super_chessboard_reset(struct super_chessboard *scb)
     chessboard_reset(scb->thumb);
 }
 
-int super_chessboard_winner(struct super_chessboard *scb)
-{
+int super_chessboard_winner(struct super_chessboard *scb) {
     return chessboard_winner(scb->thumb);
 }

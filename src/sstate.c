@@ -3,8 +3,7 @@
 #include "sstate.h"
 
 
-struct sstate *sstate_create()
-{
+struct sstate *sstate_create() {
     struct sstate *ss;
 
     ss = malloc(sizeof(*ss));
@@ -15,8 +14,7 @@ struct sstate *sstate_create()
 }
 
 void sstate_push(struct sstate *ss, update_func_t update,
-                                    render_func_t render)
-{
+                                    render_func_t render) {
     struct sstate_node *ssn;
 
     ssn = malloc(sizeof(*ssn));
@@ -28,8 +26,7 @@ void sstate_push(struct sstate *ss, update_func_t update,
     ss->top = ssn;
 }
 
-void sstate_pop(struct sstate *ss)
-{
+void sstate_pop(struct sstate *ss) {
     struct sstate_node *ssn;
 
     if (ss->top == NULL)
@@ -41,8 +38,7 @@ void sstate_pop(struct sstate *ss)
     free(ssn);
 }
 
-int sstate_update_and_render(struct sstate *ss, double delta)
-{
+int sstate_update_and_render(struct sstate *ss, double delta) {
     if (ss->top == NULL)
         return SSTATE_TOP_IS_NULL;
 

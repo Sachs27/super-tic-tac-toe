@@ -3,18 +3,12 @@
 
 
 enum {
-    CHESSBOARD_LATTICE_EMPTY = 0,
-    CHESSBOARD_LATTICE_PLAYER1 = 1,
-    CHESSBOARD_LATTICE_PLAYER2 = 2,
-    CHESSBOARD_LATTICE_HAVE = -2,
-    CHESSBOARD_LATTICE_FULL = -1,
-};
-
-enum {
     CHESSBOARD_NONE = 0,
     CHESSBOARD_PLAYER1 = 1,
     CHESSBOARD_PLAYER2 = 2,
     CHESSBOARD_TIE = 3,
+    CHESSBOARD_HAVE,
+    CHESSBOARD_FULL,
 };
 
 
@@ -23,9 +17,9 @@ struct chessboard {
      * Represent the lattice of a chessboard.
      *
      * Can be one of the following value:
-     *     CHESSBOARD_LATTICE_EMPTY
-     *     CHESSBOARD_LATTICE_PLAYER1
-     *     CHESSBOARD_LATTICE_PLAYER2
+     *     CHESSBOARD_NONE
+     *     CHESSBOARD_PLAYER1
+     *     CHESSBOARD_PLAYER2
      */
     int lattices[3][3];
 

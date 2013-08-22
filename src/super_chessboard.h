@@ -22,7 +22,7 @@ struct super_chessboard *super_chessboard_create();
 /**
  * Check a given position whether the expected one.
  *
- * The position is in the *super-chessboard's coordinate*.
+ * The position is in the _super-chessboard's coordinate_.
  */
 int super_chessboard_check(struct super_chessboard *scb, int xpos, int ypos);
 

@@ -16,8 +16,7 @@ extern struct game *game;
 
 
 static int cursorpos_to_chessboardpos(int cursor_xpos, int cursor_ypos,
-                                      int *xpos, int *ypos)
-{
+                                      int *xpos, int *ypos) {
     cursor_xpos -= game->chessboard_xoff;
     cursor_ypos -= game->chessboard_yoff;
 
@@ -33,20 +32,17 @@ static int cursorpos_to_chessboardpos(int cursor_xpos, int cursor_ypos,
         return PLAYER_INPUT_INVALID;
 }
 
-static int get_player_input(int player, int *xpos, int *ypos)
-{
-    if (game->ismouse_clicked) {
-        game->ismouse_clicked = 0;
-        return cursorpos_to_chessboardpos(game->cursor_clicked_xpos,
-                                          game->cursor_clicked_ypos,
+static int get_player_input(int player, int *xpos, int *ypos) {
+    if (game->mouse.lb.isclicked) {
+        game->mouse.lb.isclicked = 0;
+        return cursorpos_to_chessboardpos(game->mouse.lb.x, game->mouse.lb.y,
                                           xpos, ypos);
     }
 
     return PLAYER_NOT_INPUT;
 }
 
-static int putchess(void)
-{
+static int putchess(void) {
     int err;
     int xpos, ypos;
 
@@ -65,8 +61,7 @@ static int putchess(void)
 }
 
 static void drawline(GLfloat size,
-                     GLfloat xp1, GLfloat yp1, GLfloat xp2, GLfloat yp2)
-{
+                     GLfloat xp1, GLfloat yp1, GLfloat xp2, GLfloat yp2) {
     GLfloat r = size / 2.0f;
     GLfloat xline = xp2 - xp1;
     GLfloat yline = yp2 - yp1;
@@ -87,20 +82,21 @@ static void drawline(GLfloat size,
     glEnd();
 }
 
-static void drawhint()
-{
+static void drawhint() {
     int xpos, ypos;
     int xscreen, yscreen;
     struct texture *tex;
 
-    if (cursorpos_to_chessboardpos(game->cursor_xpos, game->cursor_ypos,
-                                   &xpos, &ypos) != 0)
+    if (cursorpos_to_chessboardpos(game->mouse.x, game->mouse.y,
+                                   &xpos, &ypos) != 0) {
         return;
+    }
 
-    if (game->turn == CHESSBOARD_PLAYER1)
+    if (game->turn == CHESSBOARD_PLAYER1) {
         tex = game->tex_o;
-    else
+    } else {
         tex = game->tex_x;
+    }
 
     xscreen = game->chessboard_xoff + xpos * tex->width;
     yscreen = game->chessboard_yoff + ypos * tex->height;
@@ -108,18 +104,18 @@ static void drawhint()
     if (super_chessboard_check(game->scb, xpos, ypos) == 0
             && chessboard_canput(game->scb->cbs[ypos/3][xpos/3])
             && chessboard_canput_at(game->scb->cbs[ypos/3][xpos/3],
-                xpos%3, ypos%3))
+                xpos%3, ypos%3)) {
         glColor3f(0.0f, 1.0f, 0.0f);
-    else
+    } else {
         glColor3f(1.0f, 0.0f, 0.0f);
+    }
 
     drawline(tex->width, xscreen, yscreen + tex->width / 2.0f,
              xscreen + tex->width, yscreen + tex->width / 2.0f);
     texture_draw(tex, xscreen, yscreen);
 }
 
-static void chessboard_draw(struct chessboard *cb, GLfloat xoff, GLfloat yoff)
-{
+static void chessboard_draw(struct chessboard *cb, GLfloat xoff, GLfloat yoff) {
     int tex_width = game->tex_o->width;
     int tex_height = game->tex_o->height;
     int i, j;
@@ -138,11 +134,11 @@ static void chessboard_draw(struct chessboard *cb, GLfloat xoff, GLfloat yoff)
     for (i = 0; i < 3; ++i)
     for (j = 0; j < 3; ++j) {
         switch (cb->lattices[i][j]) {
-        case CHESSBOARD_LATTICE_PLAYER1:
+        case CHESSBOARD_PLAYER1:
             texture_draw(game->tex_o, xoff + j * tex_width,
                     yoff + i * tex_height);
             break;
-        case CHESSBOARD_LATTICE_PLAYER2:
+        case CHESSBOARD_PLAYER2:
             texture_draw(game->tex_x, xoff + j * tex_width,
                     yoff + i * tex_height);
             break;
@@ -150,21 +146,19 @@ static void chessboard_draw(struct chessboard *cb, GLfloat xoff, GLfloat yoff)
     }
 }
 
-static void chessboard_drawstate(struct chessboard *cb, int xoff, int yoff)
-{
+static void chessboard_drawstate(struct chessboard *cb, int xoff, int yoff) {
     switch (cb->state) {
-    case CHESSBOARD_LATTICE_PLAYER1:
+    case CHESSBOARD_PLAYER1:
         texture_draw(game->tex_bigo, xoff, yoff);
         break;
-    case CHESSBOARD_LATTICE_PLAYER2:
+    case CHESSBOARD_PLAYER2:
         texture_draw(game->tex_bigx, xoff, yoff);
         break;
     }
 }
 
 static void super_chessboard_draw(struct super_chessboard *scb,
-                                  GLfloat xoff, GLfloat yoff)
-{
+                                  GLfloat xoff, GLfloat yoff) {
     int i, j;
     int cb_width, cb_height;
 
@@ -187,37 +181,38 @@ static void super_chessboard_draw(struct super_chessboard *scb,
             chessboard_draw(scb->cbs[i][j], xoff + j * cb_width,
                                             yoff + i * cb_height);
 
-    if (!game_iswin(game))
+    if (!game_iswin(game)) {
         drawhint();
+    }
 
     /* draw chessboard's state */
     for (i = 0; i < 3; ++i)
-        for (j = 0; j < 3; ++j)
-            chessboard_drawstate(scb->cbs[i][j], xoff + j * cb_width,
-                                                 yoff + i * cb_height);
+    for (j = 0; j < 3; ++j) {
+        chessboard_drawstate(scb->cbs[i][j], xoff + j * cb_width,
+                                             yoff + i * cb_height);
+    }
 
     /* draw mask */
     if (game->scb->xexpected == -1 || game->scb->yexpected == -1
-            || game_iswin(game))
+            || game_iswin(game)) {
         return;
+    }
 
-    for (i = 0; i < 3; ++i) {
-        for (j = 0; j < 3; ++j) {
-            if (j == game->scb->xexpected && i == game->scb->yexpected)
-                continue;
+    for (i = 0; i < 3; ++i)
+    for (j = 0; j < 3; ++j) {
+        if (j == game->scb->xexpected && i == game->scb->yexpected)
+            continue;
 
-            texture_draw_with_transparency(game->tex_mask,
-                xoff + j * game->tex_mask->width,
-                yoff + i * game->tex_mask->height, 0.5);
-        }
+        texture_draw_with_transparency(game->tex_mask,
+            xoff + j * game->tex_mask->width,
+            yoff + i * game->tex_mask->height, 0.5);
     }
 }
 
-void state_main_update(double delta)
-{
+void state_main_update(double delta) {
     if (game_iswin(game)) {
-        if (game->ismouse_clicked) {
-            game->ismouse_clicked = 0;
+        if (game->mouse.lb.isclicked) {
+            game->mouse.lb.isclicked = 0;
             sstate_pop(game->ss);
         }
     } else {
@@ -225,8 +220,7 @@ void state_main_update(double delta)
     }
 }
 
-void state_main_render()
-{
+void state_main_render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     super_chessboard_draw(game->scb,

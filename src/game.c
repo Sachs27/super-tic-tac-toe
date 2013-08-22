@@ -7,8 +7,7 @@
 #include "super_chessboard.h"
 
 
-struct game *game_create()
-{
+struct game *game_create() {
     struct game *game;
 
     game = calloc(1, sizeof(*game));
@@ -29,8 +28,7 @@ struct game *game_create()
     return game;
 }
 
-void game_destroy(struct game *game)
-{
+void game_destroy(struct game *game) {
     texture_destroy(game->tex_o);
     texture_destroy(game->tex_x);
     texture_destroy(game->tex_bigo);
@@ -44,8 +42,7 @@ void game_destroy(struct game *game)
     free(game);
 }
 
-int game_load_textures(struct game *game)
-{
+int game_load_textures(struct game *game) {
 #define TEXTURE_LOAD(tex) \
     do { \
         game->tex_##tex = texture_load("res/"#tex".png"); \
@@ -66,13 +63,11 @@ int game_load_textures(struct game *game)
     return 0;
 }
 
-void game_mainloop(struct game *game, double delta)
-{
+void game_mainloop(struct game *game, double delta) {
     sstate_update_and_render(game->ss, 0.0);
 }
 
-int game_iswin(struct game *game)
-{
+int game_iswin(struct game *game) {
     game->winner = super_chessboard_winner(game->scb);
 
     if (game->winner == CHESSBOARD_PLAYER1

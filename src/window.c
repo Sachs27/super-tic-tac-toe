@@ -1,7 +1,12 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 
 #include <unistd.h>
+
+#if defined(__linux__)
+#include <linux/limits.h>
+#endif
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -21,29 +26,25 @@ enum {
 struct game *game;
 
 
-static void on_glfw_error(int error, const char *desc)
-{
+static void on_glfw_error(int error, const char *desc) {
     fputs(desc, stderr);
 }
 
-static void on_cursor_pos(GLFWwindow *window, double x, double y)
-{
-    game->cursor_xpos = x;
-    game->cursor_ypos = y;
+static void on_cursor_pos(GLFWwindow *window, double x, double y) {
+    game->mouse.x = (int) x;
+    game->mouse.y = (int) y;
 }
 
 static void on_mouse_button(GLFWwindow *window,
-                            int button, int action, int mods)
-{
+                            int button, int action, int mods) {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        game->ismouse_clicked = 1;
-        game->cursor_clicked_xpos = game->cursor_xpos;
-        game->cursor_clicked_ypos = game->cursor_ypos;
+        game->mouse.lb.isclicked = 1;
+        game->mouse.lb.x = game->mouse.x;
+        game->mouse.lb.y = game->mouse.y;
     }
 }
 
-static void on_window_size(GLFWwindow *window, int width, int height)
-{
+static void on_window_size(GLFWwindow *window, int width, int height) {
     game->window_width = width;
     game->window_height = height;
 
@@ -56,8 +57,7 @@ static void on_window_size(GLFWwindow *window, int width, int height)
     glMatrixMode(GL_MODELVIEW);
 }
 
-static int init_context(void)
-{
+static int init_context(void) {
     glfwSetErrorCallback(on_glfw_error);
     if (!glfwInit()) {
         fprintf(stderr, "Failed to initialize GLFW.\n");
@@ -80,8 +80,7 @@ static int init_context(void)
     return 0;
 }
 
-static int init_gl(void)
-{
+static int init_gl(void) {
     if (glewInit() != GLEW_OK) {
         fprintf(stderr, "Failed to initialize GLEW.\n");
         return INIT_GLEW_FAILED;
@@ -104,8 +103,7 @@ static int init_gl(void)
     return 0;
 }
 
-static int setup(void)
-{
+static int setup(void) {
     int err;
 
     if ((err = init_context()) != 0)
@@ -120,20 +118,18 @@ static int setup(void)
     return 0;
 }
 
-static void cleanup(void)
-{
+static void cleanup(void) {
     glfwTerminate();
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     /* Change working dirtory to the binary's directory */
     {
         char path[PATH_MAX];
         char *ptr;
 
         strncpy(path, argv[0], PATH_MAX);
-        ptr = strrchr(path, '\\');
+        ptr = strrchr(path, '/');
         *ptr = '\0';
         fprintf(stderr, "%s\n", ptr);
         if (chdir(path) < 0) {

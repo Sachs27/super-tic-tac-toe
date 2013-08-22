@@ -33,11 +33,15 @@ struct game {
     int turn;
     int winner;
 
-    double  cursor_xpos;
-    double  cursor_ypos;
-    int     ismouse_clicked;
-    int     cursor_clicked_xpos;
-    int     cursor_clicked_ypos;
+    struct {
+        int x;
+        int y;
+        struct {
+            int isclicked;
+            int x;  /* left-button clicked at */
+            int y;
+        } lb;
+    } mouse;
 
     struct sstate *ss;
 };

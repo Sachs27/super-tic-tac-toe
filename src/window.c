@@ -123,18 +123,23 @@ static void cleanup(void) {
 }
 
 int main(int argc, char *argv[]) {
-    /* Change working dirtory to the binary's directory */
-    {
+    /* Change working dirtory to the binary's directory */ {
+#if defined (__WIN32__)
+        static char path_seperator = '\\';
+#else
+        static char path_seperator = '/';
+#endif
         char path[PATH_MAX];
         char *ptr;
 
         strncpy(path, argv[0], PATH_MAX);
-        ptr = strrchr(path, '/');
-        *ptr = '\0';
-        fprintf(stderr, "%s\n", ptr);
-        if (chdir(path) < 0) {
-            fprintf(stderr, "chdir error\n");
-            return 1;
+        ptr = strrchr(path, path_seperator);
+        if (ptr != NULL) {
+            *ptr = '\0';
+            if (chdir(path) < 0) {
+                fprintf(stderr, "chdir error\n");
+                return 1;
+            }
         }
     }
 
